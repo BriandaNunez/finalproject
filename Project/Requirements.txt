@@ -1,0 +1,16 @@
+pandas
+numpy
+matplotlib
+seaborn
+scipy
+scikit-learn
+imbalanced-learn
+xgboost
+lightgbm
+pytest
+tensorflow
+fastapi
+pydantic
+pre-commit
+autoflake
+autopep8

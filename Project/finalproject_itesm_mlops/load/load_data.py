@@ -1,4 +1,32 @@
 import pandas as pd
+import logging
+import os
+
+# Get the absolute path of the log folder
+log_folder = os.path.abspath(r'C:\Users\brianda.nunez\Documents\GitHub\finalproject\Project\finalproject_itesm_mlops\load')
+
+# Create the log folder if it doesn't exist
+os.makedirs(log_folder, exist_ok=True)
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+# Create a formatter
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+# Create a file handler and set the level to DEBUG
+file_handler = logging.FileHandler(os.path.join(log_folder, 'load_data.log'))
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(formatter)
+
+# Create a stream handler and set the level to INFO
+stream_handler = logging.StreamHandler()
+stream_handler.setLevel(logging.INFO)
+stream_handler.setFormatter(formatter)
+
+# Add the handlers to the logger
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
 
 class DataLoader:
     """
@@ -37,7 +65,11 @@ class DataLoader:
             pd.DataFrame
                 Data loaded from the CSV file.
         """
-        return pd.read_csv(self.file_path)
+        try:
+            logger.info('Loading data from file: %s', self.file_path)
+            return pd.read_csv(self.file_path)
+        except Exception as e:
+            logger.error('An error occurred while loading data from file. Error: %s', e)
 
 # Create an instance of the DataLoader class with your file path
 data_loader = DataLoader(r'Project\finalproject_itesm_mlops\data\fraud_oracle.csv')

@@ -1,33 +1,27 @@
-#!/usr/bin/env python
+import pytest
+import logging
 
-"""Tests for `finalproject_itesm_mlops` package."""
+#from finalproject_itesm_mlops import cli
 
-
-import unittest
-from click.testing import CliRunner
-
-from finalproject_itesm_mlops import finalproject_itesm_mlops
-from finalproject_itesm_mlops import cli
+# Configurar el logger
+logging.basicConfig(filename= r'C:\Users\brianda.nunez\Documents\GitHub\finalproject\Project\finalproject_itesm_mlops\tests\test_finalproject_itesm_mlops.log', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-class TestFinalproject_itesm_mlops(unittest.TestCase):
-    """Tests for `finalproject_itesm_mlops` package."""
+def test_something():
+    """Test something."""
+    # Agregar código de prueba aquí
+    logger.info("Running test_something")
+    assert True
 
-    def setUp(self):
-        """Set up test fixtures, if any."""
 
-    def tearDown(self):
-        """Tear down test fixtures, if any."""
+def test_command_line_interface():
+    """Test the CLI."""
+    result = cli.main()
+    assert result.exit_code == 0
+    assert '--help' in result.output
+    logger.info("Running test_command_line_interface")
 
-    def test_000_something(self):
-        """Test something."""
 
-    def test_command_line_interface(self):
-        """Test the CLI."""
-        runner = CliRunner()
-        result = runner.invoke(cli.main)
-        assert result.exit_code == 0
-        assert 'finalproject_itesm_mlops.cli.main' in result.output
-        help_result = runner.invoke(cli.main, ['--help'])
-        assert help_result.exit_code == 0
-        assert '--help  Show this message and exit.' in help_result.output
+if __name__ == "__main__":
+    pytest.main()

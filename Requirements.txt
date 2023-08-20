@@ -14,3 +14,4 @@ pydantic
 pre-commit
 autoflake
 autopep8
+click

@@ -15,3 +15,4 @@ pre-commit
 autoflake
 autopep8
 click
+uvicorn

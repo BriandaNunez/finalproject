@@ -121,3 +121,33 @@ Installing FastAPI: If you haven't installed FastAPI yet, you can do so with pip
     uvicorn main:app --reload
 
 Now, your application should be running at http://localhost:8000. You can make a POST request to http://localhost:8000/predict with a JSON body that matches the structure defined by your Pydantic model Claim to get a prediction from your model.
+
+## Docker 
+### Create a Dockerfile
+This file must be in the root and should contain:
+1. Python version
+2. Working directory inside the container to /src
+3. requirements.txt file from the host
+4. Copy src directory from the host to the /src directory inside the container
+5. The command to install the Python packages
+6. The command to update the package index inside the container and then installs the vim text editor
+7. The container port
+8. The default command that will be executed when the container starts
+
+### Build the Image
+* docker build -t fraud .
+### Run the Container
+* docker run -d --rm --name fraud-container -p 3000:8000 fraud
+### Debug the Container
+* docker exec -it fraud /bin/bash
+### Make Predictions on the Local Machine
+Once the container is running, you can make predictions using the API from your local machine. To do this, send an HTTP request to the following address:
+* http://localhost:local_port/api_route
+### Copy Container Logs to the Local Machine
+* docker logs -f 492138c56145 | Select-String -Pattern "Debug
+
+## Docker Compose
+### Create a Docker Compose file
+This file must be in the root and should contain:
+### Run Docker Compose
+* docker-compose up --build

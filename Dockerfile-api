@@ -1,0 +1,17 @@
+# Use a base image with Python and required dependencies installed
+FROM python:3.9
+
+# Set the working directory
+WORKDIR /app/api
+
+# Copy the requirements.txt file
+COPY Requirements.txt .
+
+# Install the Python dependencies
+RUN pip install -r Requirements.txt
+
+# Copy the API source code
+COPY ./api .
+
+# Specify the command to start the API server
+CMD ["python", "app.py"]

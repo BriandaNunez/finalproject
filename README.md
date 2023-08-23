@@ -135,12 +135,12 @@ This file must be in the root and should contain:
 8. The default command that will be executed when the container starts
 
 ### Build the Image
-* docker build -t fraud .
+    *docker build -t fraud .
 Where fraud is the name of my container
 ### Inspect the image
-* docker images
+    *docker images
 ### Run the image in a container
-* docker run -d --rm --name fraud-container -p 3000:8000 fraud
+    *docker run -d --rm --name fraud-container -p 3000:8000 fraud
 ### Check the container running 
 * docker ps -a
 ### Debug the Container

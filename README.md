@@ -175,12 +175,16 @@ Create a file named docker-compose.yml in the root folder of your project, the f
 
 ### Run Docker Compose
 Be sure you are in the directory where the docker-compose.yml file is located
+###
     *docker-compose up --build
+###
 Once the containers are running, you can access the frontend at http://localhost:3000 and the API at http://localhost:8000.
 
 ### Curl request
-For Frontend
+For Frontend:
+###
     *docker exec CONTAINER_ID curl -X GET http://localhost:3000/
+###
     *docker exec CONTAINER_ID curl -X GET http://localhost:8000/
 
 

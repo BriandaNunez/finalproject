@@ -142,22 +142,22 @@ Where fraud is the name of my container
 ### Run the image in a container
     *docker run -d --rm --name fraud-container -p 3000:8000 fraud
 ### Check the container running 
-* docker ps -a
+    *docker ps -a
 ### Debug the Container
-* docker exec -ID_CONTAINER /bin/bash
+    *docker exec -ID_CONTAINER /bin/bash
 ### Make Predictions on the Local Machine
 Create the network AIService
-* docker network create AIservice
+    *docker network create AIservice
 Once the container is running, you can make predictions using the API from your local machine. To do this, send an HTTP request to the following address:
-* http://localhost:local_port/api_route
+    *http://localhost:local_port/api_route
 ### Copy Container Logs to the Local Machine
-* docker logs -f 492138c56145 | Select-String -Pattern "Debug
+    *docker logs -f 492138c56145 | Select-String -Pattern "Debug
 ### Extract logs
-* docker cp CONTAINER_ID:/app/server.log .
+    *docker cp CONTAINER_ID:/app/server.log .
 ### Delete all the images
-* docker rmi -f $(docker images -aq)
+    *docker rmi -f $(docker images -aq)
 ### Delette all containers
-* docker rm -f $(docker ps -aq)
+    *docker rm -f $(docker ps -aq)
 
 ## Docker Compose
 ### Create a Docker Compose file
@@ -175,12 +175,12 @@ Create a file named docker-compose.yml in the root folder of your project, the f
 
 ### Run Docker Compose
 Be sure you are in the directory where the docker-compose.yml file is located
-* docker-compose up --build
+    *docker-compose up --build
 Once the containers are running, you can access the frontend at http://localhost:3000 and the API at http://localhost:8000.
 
 ### Curl request
 For Frontend
-* docker exec CONTAINER_ID curl -X GET http://localhost:3000/
-* docker exec CONTAINER_ID curl -X GET http://localhost:8000/
+    *docker exec CONTAINER_ID curl -X GET http://localhost:3000/
+    *docker exec CONTAINER_ID curl -X GET http://localhost:8000/
 
 

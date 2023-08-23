@@ -147,8 +147,11 @@ Where fraud is the name of my container
     *docker exec -ID_CONTAINER /bin/bash
 ### Make Predictions on the Local Machine
 Create the network AIService
+###
     *docker network create AIservice
+###
 Once the container is running, you can make predictions using the API from your local machine. To do this, send an HTTP request to the following address:
+###
     *http://localhost:local_port/api_route
 ### Copy Container Logs to the Local Machine
     *docker logs -f 492138c56145 | Select-String -Pattern "Debug

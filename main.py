@@ -1,10 +1,9 @@
 import logging
-import unittest
 import pandas as pd
-from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 import numpy as np
+import pytest
 
 # Configure the logger
 logging.basicConfig(filename='C:\\Users\\brianda.nunez\\Documents\\GitHub\\finalproject\\main.log', encoding='utf-8', level=logging.DEBUG)
@@ -26,15 +25,14 @@ ch.setFormatter(formatter)
 # Add the console handler to the logger
 logger.addHandler(ch)
 
-class TestDataExistence(unittest.TestCase):
-    def test_data_existence(self):
-        # Load training data
-        logger.debug('Loading training data')
-        df_train = pd.read_csv(r'Project\finalproject_itesm_mlops\data\fraud_oracle.csv')
+def test_data_existence():
+    # Load training data
+    logger.debug('Loading training data')
+    df_train = pd.read_csv(r'Project\finalproject_itesm_mlops\data\fraud_oracle.csv')
 
-        # Verify training data existence
-        self.assertFalse(df_train.empty, "No training data")
-        logger.info('Training data exists')
+    # Verify training data existence
+    assert not df_train.empty, "No training data"
+    logger.info('Training data exists')
 
 class InputData(BaseModel):
     feature1: float
@@ -46,28 +44,20 @@ class OutputData(BaseModel):
 
 model = joblib.load(r'Project\finalproject_itesm_mlops\models\dtmodel.pkl')
 
-# Add FastAPI to the project
+app = None
 
-app = FastAPI()
+@pytest.fixture(scope="module")
+def client():
+    global app
+    from fastapi.testclient import TestClient
+    from main import app
+    yield TestClient(app)
 
-@app.post("/train")
-def train_model():
-    # Implement the logic to train a new model
-    # Return a response indicating the success or failure of the training process
-    logger.info('Training model')
-    pass
+def test_predict(client):
+    input_data = {"feature1": 1.0, "feature2": 2.0}
+    response = client.post("/predict", json=input_data)
+    assert response.status_code == 200
+    assert response.json() == {"prediction": 0}  # Update expected prediction value based on your model
 
-@app.post("/predict", response_model=OutputData)
-def predict(input_data: InputData):
-    # Convert the input data to a numpy array
-    input_array = np.array([[input_data.feature1, input_data.feature2]])
-
-    # Make predictions using the loaded model
-    prediction = model.predict(input_array)
-
-    # Create an instance of the output data model and return it
-    output_data = OutputData(prediction=int(prediction[0]))
-    return output_data
-
-if __name__ == "__main__":
-    unittest.main()
+if __name__ == '__main__':
+    pytest.main(["-v"])

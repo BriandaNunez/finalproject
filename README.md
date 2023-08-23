@@ -136,18 +136,51 @@ This file must be in the root and should contain:
 
 ### Build the Image
 * docker build -t fraud .
-### Run the Container
+Where fraud is the name of my container
+### Inspect the image
+* docker images
+### Run the image in a container
 * docker run -d --rm --name fraud-container -p 3000:8000 fraud
+### Check the container running 
+* docker ps -a
 ### Debug the Container
-* docker exec -it fraud /bin/bash
+* docker exec -ID_CONTAINER /bin/bash
 ### Make Predictions on the Local Machine
+Create the network AIService
+* docker network create AIservice
 Once the container is running, you can make predictions using the API from your local machine. To do this, send an HTTP request to the following address:
 * http://localhost:local_port/api_route
 ### Copy Container Logs to the Local Machine
 * docker logs -f 492138c56145 | Select-String -Pattern "Debug
+### Extract logs
+* docker cp CONTAINER_ID:/app/server.log .
+### Delete all the images
+* docker rmi -f $(docker images -aq)
+### Delette all containers
+* docker rm -f $(docker ps -aq)
 
 ## Docker Compose
 ### Create a Docker Compose file
-This file must be in the root and should contain:
+Create a file named docker-compose.yml in the root folder of your project, the file should contain:
+1. version: This line specifies the version of Docker Compose you are using
+2. services: This is where you define all the services that make up your application. 
+3. build: This line tells Docker to build an image using the Dockerfile in the current directory.
+4. command: This line specifies the command that will be run when the container starts.
+5. volumes: This section maps directories on the host to directories in the Docker container. In this case, it maps the app directory on the host to the /code/app directory in the Docker container
+6. ports: This section maps the service's ports to the host's ports. For example, "8000:8000" means that port 8000 on the host is mapped to port 8000 on the service
+7. networks: This section defines the networks that the service is connected to. In this case, both the server and frontend services are connected to the AIservice network
+8. aliases: This section defines the network aliases for the service. Network aliases are additional names that a service can be reached at from other services
+9. depends_on: This section defines the dependencies between services. In this case, the frontend service depends on the server service, which means Docker Compose will ensure that the server service is started before the frontend service
+10. AIservice: This is a network defined at the top level of the Compose file. The external: true option indicates that this network has been created outside of this Compose file
+
 ### Run Docker Compose
+Be sure you are in the directory where the docker-compose.yml file is located
 * docker-compose up --build
+Once the containers are running, you can access the frontend at http://localhost:3000 and the API at http://localhost:8000.
+
+### Curl request
+For Frontend
+* docker exec CONTAINER_ID curl -X GET http://localhost:3000/
+* docker exec CONTAINER_ID curl -X GET http://localhost:8000/
+
+
